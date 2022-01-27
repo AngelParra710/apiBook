@@ -3,6 +3,7 @@ const mysql = require('./config/mysql')
 const express = require('express');
 const cors = require('cors');
 const { json } = require('body-parser');
+const res = require('express/lib/response');
 const app = express();
 //Middlewares
 app.use(cors())
@@ -54,6 +55,24 @@ app.post('/libros/add', async (req, res) => {
     const data = await insertLibros(libro);
     res.status(200).send('Guardado')
 });
+
+app.post('/categoria/add', async(req, res) => {
+    const { insertCategoria } = mysql;
+    const categoria = {
+        categoria: req.body.categoria,
+        descripcion: req.body.descripcion,
+    }
+    const data = insertCategoria(categoria);
+    res.status(200).send('Guardado');
+});
+
+app.get('/categorias', async(req, res) => {
+    const { getCategoria } = mysql;
+    const data = await getCategoria();
+    console.log(data)
+    res.status(200).json(data);
+})
+
 //Inicializzar puerto
 app.listen(config.PORT, () => {
     console.log('Funcionando en puerto: ' + config.PORT)

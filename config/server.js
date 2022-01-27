@@ -13,6 +13,10 @@ const connection = mysql.createConnection({
     database : process.env.database
 })
 
+connection.connect(error => {
+    if(error) throw error
+    console.log('Database Running')
+})
 
 module.exports = {
     config,
